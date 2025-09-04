@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"go_projects1/client"
 	"log"
+	"rollcall_xmu/src/client"
 	"time"
 )
 
 func loadConfig() (username, password, ua string, err error) {
-	viper.SetConfigName("config")
+	viper.SetConfigName("config/config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	if err = viper.ReadInConfig(); err != nil {

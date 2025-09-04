@@ -33,6 +33,7 @@ func NewXMULogin(userAgent string) *XMULogin {
 	return &XMULogin{client: c}
 }
 
+// 加密部分
 func randomString(length int) (string, error) {
 	chars := "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"
 	var b strings.Builder
@@ -98,6 +99,7 @@ func encryptPassword(password, salt string) string {
 	return enc
 }
 
+// 登录部分
 func (x *XMULogin) getLoginPage() (salt, execution, lt string, err error) {
 	url := "https://ids.xmu.edu.cn/authserver/login"
 	resp, err := x.client.R().Get(url)
