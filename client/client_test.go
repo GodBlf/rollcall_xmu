@@ -1,14 +1,13 @@
-package test
+package client
 
 import (
 	"fmt"
-	"rollcall_xmu/client"
 	"testing"
 )
 
 func Test_RollCallStatus(t *testing.T) {
-	radarrest := &client.RadarResp{}
-	radarrest.Rollcalls = append(radarrest.Rollcalls, client.RadarRollcall{})
+	radarrest := &RadarResp{}
+	radarrest.Rollcalls = append(radarrest.Rollcalls, RadarRollcall{})
 	radarrest.Rollcalls[0].CourseTitle = "大学物理"
 	radarrest.Rollcalls[0].RollcallID = 1234
 	pending := make(map[string]int, 2)

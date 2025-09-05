@@ -8,14 +8,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/go-resty/resty/v2"
+	"go.uber.org/zap"
 	"log"
 	"math/big"
 	"net/http/cookiejar"
+	"rollcall_xmu/logs"
 	"strings"
 	"time"
-
-	"github.com/PuerkitoBio/goquery"
-	"github.com/go-resty/resty/v2"
 )
 
 type XMULogin struct {
@@ -115,8 +116,30 @@ func (x *XMULogin) getLoginPage() (salt, execution, lt string, err error) {
 		return "", "", "", fmt.Errorf("解析登录页失败: %w", err)
 	}
 
-	salt, _ = doc.Find("#pwdEncryptSalt").Attr("value")
-	execution, _ = doc.Find("input[name='execution']").Attr("value")
+	salt, boolean := doc.Find("#pwdEncryptSalt").Attr("value")
+	if boolean == false {
+		logs.Logger.Error(
+			"加密盐抓取失败",
+			zap.Error(err),
+		)
+	} else {
+		logs.Logger.Info(
+			"抓取加密盐成功",
+			zap.String("encryp_salt", salt),
+		)
+	}
+	execution, boolean = doc.Find("input[name='execution']").Attr("value")
+	if boolean == false {
+		logs.Logger.Error(
+			"execution抓取失败",
+			zap.Error(err),
+		)
+	} else {
+		logs.Logger.Info(
+			"execution抓取成功",
+			zap.String("execution", execution),
+		)
+	}
 	lt, _ = doc.Find("input[name='lt']").Attr("value")
 
 	if salt == "" || execution == "" {
