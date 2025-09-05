@@ -6,6 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/spf13/viper v1.20.1
+	go.uber.org/zap v1.27.0
 )
 
 require (
