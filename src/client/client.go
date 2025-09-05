@@ -199,11 +199,10 @@ func (x *XMULogin) RollCallStatus() (map[string]int, error) {
 
 	pending := make(map[string]int)
 	for _, rc := range r.Rollcalls {
-		if rc.RollcallStatus == "in_progress" && rc.Status == "absent" && !rc.IsExpired {
-			if rc.RollcallID != 0 {
-				pending[rc.CourseTitle] = rc.RollcallID
-			}
+		if rc.RollcallID != 0 {
+			pending[rc.CourseTitle] = rc.RollcallID
 		}
+
 	}
 
 	return pending, nil
