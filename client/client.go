@@ -284,6 +284,13 @@ func (x *XMULogin) RollCallAnswerTest(id int) error {
 	return nil
 }
 
-func (x *XMULogin) AutoAnswerRollCall(rollcall map[string]int, deviceId string) error {
+func (x *XMULogin) AutoAnswerRollCall(course map[string]int, rollcall map[string]int, deviceId string) error {
+	for courseName, courseRollCallId := range rollcall {
+		m := make(map[string]string)
+		m[strconv.Itoa(courseRollCallId)] = deviceId
+		url := fmt.Sprintf("https://lnt.xmu.edu.cn/api/rollcall/%d/student_rollcalls", course[courseName])
+		x.client.SetFormData(m)
+		x.client.R().Post(url)
+	}
 	return errors.New("error")
 }
