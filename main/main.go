@@ -35,7 +35,6 @@ func main() {
 
 	x := client.NewXMULogin(ua)
 	log.Println("开始模拟登录厦门大学统一认证系统...")
-
 	ok, err := x.Login(username, password)
 	if err != nil || !ok {
 		log.Fatalf("登录失败: %v", err)
