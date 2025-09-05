@@ -283,3 +283,7 @@ func (x *XMULogin) RollCallAnswerTest(id int) error {
 	log.Printf("签到码: %s", s.NumberCode)
 	return nil
 }
+
+func (x *XMULogin) AutoAnswerRollCall(rollcall map[string]int, deviceId string) error {
+	return errors.New("error")
+}
