@@ -286,13 +286,41 @@ func (x *XMULogin) RollCallAnswerTest(id int) error {
 	return nil
 }
 
-func (x *XMULogin) AutoAnswerRollCall(course map[string]int, rollcall map[string]int, deviceId string) error {
-	for courseName, courseRollCallId := range rollcall {
-		m := make(map[string]string)
-		m[strconv.Itoa(courseRollCallId)] = deviceId
-		url := fmt.Sprintf("https://lnt.xmu.edu.cn/api/rollcall/%d/student_rollcalls", course[courseName])
-		x.client.SetFormData(m)
-		x.client.R().Post(url)
+func (x *XMULogin) AutoAnswerRollCall(courseNameId map[string]int, rollcallCodes map[string]string, deviceId string) error {
+	for courseName, numberCode := range rollcallCodes {
+		url := fmt.Sprintf("https://lnt.xmu.edu.cn/api/rollcall/%s/student_rollcalls", courseNameId[courseName])
+		payload := map[string]string{
+			"numberCode": numberCode,
+			"deviceId":   deviceId,
+		}
+		resp, err := x.client.R().
+			SetHeader("Content-Type", "application/json").
+			SetBody(payload).
+			Post(url)
+		if err != nil {
+			logs.Logger.Error(
+				"签到请求失败",
+				zap.String("course", courseName),
+				zap.Error(err),
+			)
+			continue
+		}
+		if resp.StatusCode() >= 400 {
+			logs.Logger.Error(
+				"签到失败",
+				zap.String("course", courseName),
+				zap.Int("status_code", resp.StatusCode()),
+				zap.String("response", resp.String()),
+			)
+			continue
+		}
+		logs.Logger.Info(
+			"签到成功",
+			zap.String("course", courseName),
+			zap.String("response", resp.String()),
+		)
+		//
+		time.Sleep(200 * time.Second)
 	}
 	return errors.New("error")
 }
