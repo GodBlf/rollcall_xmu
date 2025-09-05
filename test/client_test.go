@@ -32,5 +32,4 @@ func TestYinyong(t *testing.T) {
 	for i, i2 := range arr {
 		fmt.Printf("%d %d\n", i, i2)
 	}
-	slices
 }
