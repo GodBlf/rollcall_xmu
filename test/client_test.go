@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"rollcall_xmu/src/client"
+	"rollcall_xmu/client"
 	"testing"
 )
 

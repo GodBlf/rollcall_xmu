@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"log"
-	"rollcall_xmu/src/client"
+	"rollcall_xmu/client"
 	"time"
 )
 
