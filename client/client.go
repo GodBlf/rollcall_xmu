@@ -7,6 +7,7 @@ import (
 	crand "crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/go-resty/resty/v2"
@@ -15,6 +16,7 @@ import (
 	"math/big"
 	"net/http/cookiejar"
 	"rollcall_xmu/logs"
+	"strconv"
 	"strings"
 	"time"
 )
