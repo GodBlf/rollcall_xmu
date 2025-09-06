@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/go-resty/resty/v2"
+	"github.com/tidwall/gjson"
 	"go.uber.org/zap"
 	"log"
 	"math/big"
@@ -275,15 +276,16 @@ func (x *XMULogin) RollCallAnswerTest(id int) error {
 		return err
 	}
 	log.Printf("签到码查询响应状态码: %d", resp.StatusCode())
+	get := gjson.Get(resp.String(), "number_code")
+	logs.Logger.Info(
+		"签到码查询结果",
+		zap.Int64("number_code", get.Int()),
+	)
 
-	var s StudentRollcallResp
-	if err := json.Unmarshal(resp.Body(), &s); err != nil {
-		return err
-	}
-	log.Printf("签到码: %s", s.NumberCode)
 	return nil
 }
 
+// fixme:ai写的发送post请求还没测试
 func (x *XMULogin) AutoAnswerRollCall(courseNameId map[string]int, rollcallCodes map[string]string, deviceId string) error {
 	for courseName, numberCode := range rollcallCodes {
 		url := fmt.Sprintf("https://lnt.xmu.edu.cn/api/rollcall/%s/student_rollcalls", courseNameId[courseName])
@@ -322,3 +324,5 @@ func (x *XMULogin) AutoAnswerRollCall(courseNameId map[string]int, rollcallCodes
 	}
 	return nil
 }
+
+//todo: 写雷达签到的算子

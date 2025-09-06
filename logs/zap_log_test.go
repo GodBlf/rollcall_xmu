@@ -2,13 +2,24 @@ package logs
 
 import (
 	"go.uber.org/zap"
+	"rollcall_xmu/initialize"
 	"testing"
 )
 
 func TestZapLog(t *testing.T) {
-	config := zap.NewDevelopmentConfig()
-	config.OutputPaths = []string{"stderr", "log.txt"}
-	build, _ := config.Build()
-	Logger = build
-	Logger.Info("helloworld", zap.String("user", "user"))
+	initialize.InitLogger()
+	zap.L().Info("hellow world")
+}
+
+type Node struct {
+	val  int
+	next *Node
+}
+
+func TestTmp(t *testing.T) {
+	Logger.Info(
+		"test",
+		zap.String("key", "value"),
+		zap.Int("num", 1234),
+	)
 }

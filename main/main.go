@@ -9,6 +9,9 @@ import (
 )
 
 func loadConfig() (username, password, ua string, err error) {
+	fmt.Println(
+		`================昊龙昊龙在世真龙===================`,
+	)
 	viper.SetConfigName("config/config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
@@ -75,4 +78,5 @@ func main() {
 		time.Sleep(200 * time.Second)
 		break
 	}
+	time.Sleep(200 * time.Second)
 }

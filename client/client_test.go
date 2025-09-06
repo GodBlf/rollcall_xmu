@@ -2,6 +2,12 @@ package client
 
 import (
 	"fmt"
+	"github.com/go-resty/resty/v2"
+	"github.com/tidwall/gjson"
+	"go.uber.org/zap"
+	"log"
+	"net/http/cookiejar"
+	"rollcall_xmu/logs"
 	"testing"
 )
 
@@ -32,3 +38,25 @@ func TestYinyong(t *testing.T) {
 		fmt.Printf("%d %d\n", i, i2)
 	}
 }
+func TestRollCallAnswer(t *testing.T) {
+	jar, _ := cookiejar.New(nil)
+	client := resty.New()
+	client.SetCookieJar(jar)
+	url := fmt.Sprintf("https://lnt.xmu.edu.cn/api/rollcall/%d/student_rollcalls", 141798)
+	resp, err := client.R().Get(url)
+	if err != nil {
+		logs.Logger.Error("签到码查询请求失败", zap.Error(err))
+		return
+	}
+	log.Printf("签到码查询响应状态码: %d", resp.StatusCode())
+	get := gjson.Get(resp.String(), "number_code")
+	logs.Logger.Info(
+		"签到码查询结果",
+		zap.Int64("number_code", get.Int()),
+	)
+
+}
+
+//todo: autorollcallanswer unittest
+
+//todo: 雷达签到测试
