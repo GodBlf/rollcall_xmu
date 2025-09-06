@@ -10,5 +10,5 @@ func init() {
 	config := zap.NewDevelopmentConfig()
 	config.OutputPaths = []string{"stderr", "logs/log.txt"}
 	build, _ := config.Build()
-	zap.ReplaceGlobals(build)
+	Logger = build
 }
